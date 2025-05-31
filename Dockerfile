@@ -74,7 +74,7 @@ RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
 
 # Install GHCup (installs GHC and Cabal)
 ENV BOOTSTRAP_HASKELL_NONINTERACTIVE=1
-# Install ghcup + tools
+# Install ghcup and tools
 RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash \
  && /bin/bash -c "source /root/.ghcup/env && \
       ghcup install ghc 9.6.7 && \
@@ -82,11 +82,11 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash \
       ghcup install cabal 3.12.1.0 && \
       ghcup set cabal 3.12.1.0 && \
       cabal update" \
- && chmod a+r /root/.ghcup/env
+ && cp /root/.ghcup/env /etc/ghcup-env
 
-# Source env globally
-RUN echo 'source /root/.ghcup/env' > /etc/profile.d/ghcup.sh \
- && chmod +x /etc/profile.d/ghcup.sh
+# Source env globally for all login users
+RUN echo 'source /etc/ghcup-env' > /etc/profile.d/ghcup.sh \
+ && chmod 644 /etc/ghcup-env /etc/profile.d/ghcup.sh
 
 # Clean up
 RUN rm -rf /tmp/* \
