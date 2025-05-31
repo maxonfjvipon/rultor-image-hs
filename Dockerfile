@@ -72,19 +72,18 @@ RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
     && gem install pdd -v 0.23.1 \
     && gem install openssl -v 3.1.0"
 
-# GHCup + Haskell toolchain (GHC + Cabal)
-ENV BOOTSTRAP_HASKELL_NONINTERACTIVE=1
-RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash \
-  && /bin/bash -c "source /root/.ghcup/env && \
-      ghcup install ghc 9.6.7 && \
-      ghcup set ghc 9.6.7 && \
-      ghcup install cabal 3.12.1.0 && \
-      ghcup set cabal 3.12.1.0 && \
-      cabal update"
+# Install GHCup + GHC + Cabal globally (for all users, including Rultor's `r`)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | \
+    BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
+    BOOTSTRAP_HASKELL_INSTALL_STACK=0 \
+    sh -s -- --no-rc --set \
+  && /root/.ghcup/bin/ghcup install ghc 9.6.7 --set --global \
+  && /root/.ghcup/bin/ghcup install cabal 3.12.1.0 --set --global \
+  && /root/.ghcup/bin/cabal update
 
-# Ensure PATH is set for all future users and for Rultor's runtime user
-RUN echo 'export PATH=$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH' >> /root/.profile \
- && echo 'export PATH=/root/.ghcup/bin:/root/.cabal/bin:$PATH' >> /etc/skel/.profile
+# Add global tools to system PATH (for all users)
+RUN echo 'export PATH=/root/.ghcup/bin:/root/.cabal/bin:$PATH' >> /etc/profile.d/ghcup.sh \
+  && chmod +x /etc/profile.d/ghcup.sh
 
 # Clean up
 RUN rm -rf /tmp/* \
