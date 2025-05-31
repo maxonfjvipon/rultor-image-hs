@@ -31,15 +31,6 @@ ENV LC_ALL=en_US.UTF-8
 RUN mkdir -p /root/.gnupg && \
     echo "disable-ipv6" >> /root/.gnupg/dirmngr.conf
 
-# Move installation to a shared location
-RUN mv /root/.ghcup /opt/ghcup
-RUN mv /root/.cabal /opt/.cabal
-RUN ln -s /opt/ghcup/bin/ghc /usr/local/bin/ghc
-RUN ln -s /opt/ghcup/bin/cabal /usr/local/bin/cabal
-RUN chmod -R a+rx /opt/ghcup /opt/.cabal
-RUN echo 'export PATH=/opt/ghcup/bin:/opt/.cabal/bin:$PATH' >> /etc/profile
-RUN echo 'export PATH=/opt/ghcup/bin:/opt/.cabal/bin:$PATH' >> /etc/skel/.profile
-
 # Install Docker CLI
 RUN mkdir -p /tmp/download && \
     curl -s -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.06.3-ce.tgz" | \
