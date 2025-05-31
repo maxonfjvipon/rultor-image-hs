@@ -47,7 +47,7 @@ RUN mkdir -p /tmp/download \
   && rm -rf /tmp/download
 
 # SSH Daemon
-RUN apt-get -y install ssh \
+RUN apt-get -y install openssh-server \
   && mkdir /var/run/sshd \
   && chmod 0755 /var/run/sshd
 
