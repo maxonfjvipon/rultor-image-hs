@@ -72,21 +72,19 @@ RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
     && gem install pdd -v 0.23.1 \
     && gem install openssl -v 3.1.0"
 
-# Install GHCup (installs GHC and Cabal)
+# GHCup + Haskell toolchain (GHC + Cabal)
 ENV BOOTSTRAP_HASKELL_NONINTERACTIVE=1
-# Install ghcup and tools
 RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash \
- && /bin/bash -c "source /root/.ghcup/env && \
+  && /bin/bash -c "source /root/.ghcup/env && \
       ghcup install ghc 9.6.7 && \
       ghcup set ghc 9.6.7 && \
       ghcup install cabal 3.12.1.0 && \
       ghcup set cabal 3.12.1.0 && \
-      cabal update" \
- && cp /root/.ghcup/env /etc/ghcup-env
+      cabal update"
 
-# Source env globally for all login users
-RUN echo 'source /etc/ghcup-env' > /etc/profile.d/ghcup.sh \
- && chmod 644 /etc/ghcup-env /etc/profile.d/ghcup.sh
+# Ensure PATH is set for all future users and for Rultor's runtime user
+RUN echo 'export PATH=$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH' >> /root/.profile \
+ && echo 'export PATH=/root/.ghcup/bin:/root/.cabal/bin:$PATH' >> /etc/skel/.profile
 
 # Clean up
 RUN rm -rf /tmp/* \
