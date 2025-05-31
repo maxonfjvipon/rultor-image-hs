@@ -56,30 +56,17 @@ RUN apt-get -y install ssh \
   && mkdir /var/run/sshd \
   && chmod 0755 /var/run/sshd
 
-# Ruby
-RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
-  && gpg --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB \
-  && curl -L https://get.rvm.io | bash -s stable \
-  && echo "source /usr/local/rvm/scripts/rvm && rvm use 3.2.2 && rvm default 3.2.2" >> /root/.profile \
-  && bash -l -c ". /etc/profile.d/rvm.sh && rvm pkg install openssl" \
-  && bash -l -c ". /etc/profile.d/rvm.sh && rvm install ruby-3.2.2 --with-openssl-lib=/usr/lib --with-openssl-include=/usr/include" \
-  && echo 'gem: --no-document' >> ~/.gemrc \
-  && echo 'rvm_silence_path_mismatch_check_flag=1' >> ~/.rvmrc \
-  && bash -l -c ". /etc/profile.d/rvm.sh \
-    && rvm use 3.2.2 \
-    && gem install bundler -v 2.3.26 \
-    && gem install xcop -v 0.8.0 \
-    && gem install pdd -v 0.23.1 \
-    && gem install openssl -v 3.1.0"
+# Download and install GHCup
+RUN export BOOTSTRAP_HASKELL_NONINTERACTIVE=1 && \
+    export BOOTSTRAP_HASKELL_INSTALL_STACK=0 && \
+    curl -sSf https://get-ghcup.haskell.org -o install-ghcup.sh && \
+    bash install-ghcup.sh --no-rc --set && \
+    rm install-ghcup.sh
 
-# Install GHCup + GHC + Cabal globally (for all users, including Rultor's `r`)
-RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | \
-    BOOTSTRAP_HASKELL_NONINTERACTIVE=1 \
-    BOOTSTRAP_HASKELL_INSTALL_STACK=0 \
-    sh -s -- --no-rc --set \
-  && /root/.ghcup/bin/ghcup install ghc 9.6.7 --set --global \
-  && /root/.ghcup/bin/ghcup install cabal 3.12.1.0 --set --global \
-  && /root/.ghcup/bin/cabal update
+# Install GHC and Cabal globally for all users
+RUN /root/.ghcup/bin/ghcup install ghc 9.6.7 --set --global && \
+    /root/.ghcup/bin/ghcup install cabal 3.12.1.0 --set --global && \
+    /root/.ghcup/bin/cabal update
 
 # Add global tools to system PATH (for all users)
 RUN echo 'export PATH=/root/.ghcup/bin:/root/.cabal/bin:$PATH' >> /etc/profile.d/ghcup.sh \
