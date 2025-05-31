@@ -27,9 +27,17 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-# Basic Linux tools
+# Basic Linux tools and system dependencies
 RUN apt-get -y install curl \
   software-properties-common
+  build-essential \
+  libgmp-dev \
+  libtinfo-dev \
+  libncurses-dev \
+  xz-utils \
+  ca-certificates \
+  gnupg \
+  && rm -rf /var/lib/apt/lists/*
 
 # Docker cli
 RUN mkdir -p /tmp/download \
@@ -64,19 +72,25 @@ RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
     && gem install pdd -v 0.23.1 \
     && gem install openssl -v 3.1.0"
 
-# Haskell (GHC and Cabal)
-RUN apt-get install -y gnupg software-properties-common \
-  && curl -sSL https://get.haskellstack.org/ | sh \
-  && stack setup \
-  && stack install cabal-install \
-  && echo 'export PATH=$HOME/.local/bin:$PATH' >> /root/.profile
+# Install GHCup (installs GHC and Cabal)
+ENV BOOTSTRAP_HASKELL_NONINTERACTIVE=1
+RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | bash
+
+# Set up PATH and environment variables for GHC and Cabal
+ENV PATH="/root/.ghcup/bin:${PATH}"
+
+RUN ghcup install ghc 9.6.7 \
+  && ghcup set ghc 9.6.7 \
+  && ghcup install cabal 3.12.1.0 \
+  && ghcup set cabal 3.12.1.0 \
+  && echo 'export PATH="$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH"' >> /root/.profile
+  && cabal update
 
 # Clean up
 RUN rm -rf /tmp/* \
   /root/.ssh \
   /root/.cache \
   /root/.gnupg \
-  /root/.stack \
   /root/.cabal
 
 ENTRYPOINT ["/bin/bash", "--login", "-c"]
