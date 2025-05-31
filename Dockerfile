@@ -8,7 +8,13 @@ FROM haskell:9.6.7
 RUN apt-get update && apt-get install -y \
     libgmp-dev \
     zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
+    software-properties-common \
+    build-essential \
+    libncurses-dev \
+    openssh-server && \
+    mkdir -p /var/run/sshd && \
+    chmod 0755 /var/run/sshd && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
 
@@ -33,23 +39,11 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 
-# Basic Linux tools and system dependencies
-RUN apt-get -y install \
-  software-properties-common \
-  build-essential \
-  libncurses-dev \
-  && rm -rf /var/lib/apt/lists/*
-
 # Docker cli
 RUN mkdir -p /tmp/download \
   && curl -s -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.06.3-ce.tgz" | tar -xz -C /tmp/download \
   && mv /tmp/download/docker/docker /usr/bin/ \
   && rm -rf /tmp/download
-
-# SSH Daemon
-RUN apt-get -y install openssh-server \
-  && mkdir /var/run/sshd \
-  && chmod 0755 /var/run/sshd
 
 # Clean up
 RUN rm -rf /tmp/* \
