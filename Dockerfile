@@ -83,7 +83,6 @@ RUN ghcup install ghc 9.6.7 \
   && ghcup set ghc 9.6.7 \
   && ghcup install cabal 3.12.1.0 \
   && ghcup set cabal 3.12.1.0 \
-  && echo 'export PATH="$HOME/.ghcup/bin:$HOME/.cabal/bin:$PATH"' >> /root/.profile \
   && cabal update
 
 # Clean up
