@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: Copyright (c) 2025 Max Trunnikov
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: hadolint
+on:
+  push:
+  pull_request:
+jobs:
+  hadolint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@master
+      - uses: hadolint/hadolint-action@v3.1.0
