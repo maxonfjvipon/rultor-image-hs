@@ -29,7 +29,7 @@ ENV LANGUAGE=en_US.UTF-8
 
 # Basic Linux tools and system dependencies
 RUN apt-get -y install curl \
-  software-properties-common
+  software-properties-common \
   build-essential \
   libgmp-dev \
   libtinfo-dev \
