@@ -65,11 +65,11 @@ RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
     && gem install openssl -v 3.1.0"
 
 # Haskell (GHC and Cabal)
-RUN apt-get update -y \
-  && apt-get install -y gnupg software-properties-common \
+RUN apt-get install -y gnupg software-properties-common \
   && curl -sSL https://get.haskellstack.org/ | sh \
   && stack setup \
   && stack install cabal-install
+  && echo 'export PATH=$HOME/.local/bin:$PATH' >> /root/.profile
 
 # Clean up
 RUN rm -rf /tmp/* \
