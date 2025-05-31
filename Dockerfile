@@ -68,7 +68,7 @@ RUN apt-get -y install ruby-dev libmagic-dev zlib1g-dev openssl \
 RUN apt-get install -y gnupg software-properties-common \
   && curl -sSL https://get.haskellstack.org/ | sh \
   && stack setup \
-  && stack install cabal-install
+  && stack install cabal-install \
   && echo 'export PATH=$HOME/.local/bin:$PATH' >> /root/.profile
 
 # Clean up
