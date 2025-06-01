@@ -27,7 +27,8 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 ENV PATH="/usr/local/bin/cabal:/opt/ghc/9.6.7/bin/ghc:$PATH"
 
 # Also inject it into skel so user 'r' inherits it
-RUN echo 'export PATH=/usr/local/bin/cabal:/opt/ghc/9.6.7/bin/ghc:$PATH' >> /etc/skel/.profile
+RUN echo 'export PATH=/usr/local/bin/cabal:/opt/ghc/9.6.7/bin/ghc:$PATH' >> /etc/skel/.profile && \
+    echo 'export PATH=/usr/local/bin/cabal:/opt/ghc/9.6.7/bin/ghc:$PATH' >> /etc/profile
 
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
