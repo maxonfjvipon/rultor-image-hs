@@ -58,6 +58,9 @@ RUN mkdir -p /tmp/download && \
     mv /tmp/download/docker/docker /usr/bin/ && \
     rm -rf /tmp/download
 
+# Update cabal index
+RUN cabal update
+
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
 
