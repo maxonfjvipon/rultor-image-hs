@@ -45,4 +45,4 @@ RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
 WORKDIR /tmp
 
 # Default shell for interactive use
-ENTRYPOINT ["/bin/bash", "--login", "-c"]
+ENTRYPOINT ["/bin/bash", "-c"]
