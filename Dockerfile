@@ -28,7 +28,7 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-# Set cabal donwload path and warmpup
+# Set cabal download path and warmpup
 RUN mkdir -p /root/.cabal && \
     cabal user-config init && \
     echo -e "\nstore-dir: /opt/cabal/store\n\ninstall-dirs global\n  prefix: /opt/cabal\n" >> /root/.cabal/config && \
