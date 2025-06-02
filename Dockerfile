@@ -28,12 +28,6 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-# Set cabal download path and warmpup
-RUN mkdir -p /root/.cabal && \
-    cabal user-config init && \
-    echo -e "\nstore-dir: /opt/cabal/store\n\ninstall-dirs global\n  prefix: /opt/cabal\n" >> /root/.cabal/config && \
-    cabal update
-
 # Disable IPv6 for GnuPG (used by ghcup)
 RUN mkdir -p /root/.gnupg && \
     echo "disable-ipv6" >> /root/.gnupg/dirmngr.conf
@@ -57,12 +51,15 @@ RUN gem install bundler -v 2.3.26 && \
     gem install pdd -v 0.23.1 && \
     gem install openssl -v 3.1.0
 
-# Warmup
-RUN cd /tmp && \
-    git clone --branch 0.0.1 https://github.com/objectionary/phino.git && \
-    cd phino && \
-    cabal build && \
-    cabal test
+# Install Docker CLI
+RUN mkdir -p /tmp/download && \
+    curl -s -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.06.3-ce.tgz" | \
+    tar -xz -C /tmp/download && \
+    mv /tmp/download/docker/docker /usr/bin/ && \
+    rm -rf /tmp/download
+
+# Update cabal index
+RUN cabal update
 
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
