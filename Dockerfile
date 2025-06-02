@@ -61,6 +61,14 @@ RUN mkdir -p /tmp/download && \
 # Update cabal index
 RUN cabal update
 
+WORKDIR /tmp
+
+# Warmup
+RUN git clone --branch 0.0.1 https://github.com/objectionary/phino.git && \
+    cd phino && \
+    cabal build && \
+    cabal test
+
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
 
