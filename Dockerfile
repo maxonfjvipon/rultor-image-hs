@@ -51,13 +51,6 @@ RUN gem install bundler -v 2.3.26 && \
     gem install pdd -v 0.23.1 && \
     gem install openssl -v 3.1.0
 
-# Install Docker CLI
-RUN mkdir -p /tmp/download && \
-    curl -s -L "https://download.docker.com/linux/static/stable/x86_64/docker-18.06.3-ce.tgz" | \
-    tar -xz -C /tmp/download && \
-    mv /tmp/download/docker/docker /usr/bin/ && \
-    rm -rf /tmp/download
-
 # Update cabal index
 RUN cabal update
 
