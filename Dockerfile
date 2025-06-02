@@ -28,6 +28,12 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
+# Set cabal donwload path and warmpup
+RUN mkdir -p /root/.cabal && \
+    cabal user-config init && \
+    echo -e "\nstore-dir: /opt/cabal/store\n\ninstall-dirs global\n  prefix: /opt/cabal\n" >> /root/.cabal/config && \
+    cabal update
+
 # Disable IPv6 for GnuPG (used by ghcup)
 RUN mkdir -p /root/.gnupg && \
     echo "disable-ipv6" >> /root/.gnupg/dirmngr.conf
@@ -51,13 +57,9 @@ RUN gem install bundler -v 2.3.26 && \
     gem install pdd -v 0.23.1 && \
     gem install openssl -v 3.1.0
 
-# Update cabal index
-RUN cabal update
-
-WORKDIR /tmp
-
 # Warmup
-RUN git clone --branch 0.0.1 https://github.com/objectionary/phino.git && \
+RUN cd /tmp && \
+    git clone --branch 0.0.1 https://github.com/objectionary/phino.git && \
     cd phino && \
     cabal build && \
     cabal test
