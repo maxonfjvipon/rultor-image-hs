@@ -27,6 +27,8 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
+ENV CABAL_DIR /opt/cabal
+RUN mkdir -p ${CABAL_DIR}
 
 # Disable IPv6 for GnuPG (used by ghcup)
 RUN mkdir -p /root/.gnupg && \
@@ -59,7 +61,11 @@ RUN mkdir -p /tmp/download && \
     rm -rf /tmp/download
 
 # Update cabal index
-RUN cabal update
+RUN cabal update && \
+    cd /tmp && \
+    git clone --branch=0.0.1 --depth=1 https://github.com/objectionary/phino.git && \
+    cd phino && \
+    cabal build --dependencies-only
 
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
