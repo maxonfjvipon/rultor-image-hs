@@ -13,7 +13,7 @@ executable warmup-project
       case-insensitive, cereal, cmdargs, conduit, conduit-extra, containers,
       cabal, deepseq, directory, exceptions, filepath, ghc-prim,
       haskell-src-exts, http-client, http-conduit, http-types, HTTP,
-      haskell98, hashable, hspec, HUnit, lens, lifted-base, megaparsec,
+      hashable, hspec, HUnit, lens, lifted-base, megaparsec,
       network, network-uri, old-locale, old-time, optparse-applicative,
       parallel, parsec, pipes, pretty, pretty-show, primitive, process,
       random, regex-compat, regex-posix, resourcet, safe, scientific,
