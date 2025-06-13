@@ -11,7 +11,7 @@ executable warmup-project
       async, attoparsec, aeson, amazonka-core, ansi-terminal, array,
       base64-bytestring, binary, bifunctors, blaze-builder, bytestring,
       case-insensitive, cereal, cmdargs, conduit, conduit-extra, containers,
-      cabal, deepseq, directory, exceptions, filepath, ghc-prim,
+      deepseq, directory, exceptions, filepath, ghc-prim,
       haskell-src-exts, http-client, http-conduit, http-types, HTTP,
       hashable, hspec, HUnit, lens, lifted-base, megaparsec,
       network, network-uri, old-locale, old-time, optparse-applicative,
