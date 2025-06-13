@@ -28,9 +28,8 @@ executable warmup-project
       adjunctions, kan-extensions, profunctors, comonad, these, validation,
       machines, algebra, arithmoi, mtl, microlens, microlens-th, openal,
       OpenGL, GLUT, GLFW-b, SDL2, network-simple, wai-extra, wai-logger,
-      warp-tls, warp-extra, servant, servant-client, servant-server,
-      servant-docs, http-api-data, prettyprinter, silently, file-embed,
-      binary-ieee754
+      warp-tls, servant, servant-client, servant-server, servant-docs,
+      http-api-data, prettyprinter, silently, file-embed, binary-ieee754
   default-language:   Haskell2010
 
 test-suite warmup-test
