@@ -26,7 +26,7 @@ executable warmup-project
       data-default-instances-base, data-default-instances-containers,
       data-default-instances-dlist, errors, constraints, reflection, free,
       adjunctions, kan-extensions, profunctors, comonad, these, validation,
-      machines, algebra, arithmoi, mtl, microlens, microlens-th, openal,
+      machines, algebra, arithmoi, mtl, microlens, microlens-th,
       OpenGL, GLUT, GLFW-b, SDL2, network-simple, wai-extra, wai-logger,
       warp-tls, servant, servant-client, servant-server, servant-docs,
       http-api-data, prettyprinter, silently, file-embed, binary-ieee754
