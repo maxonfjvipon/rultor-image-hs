@@ -15,7 +15,9 @@ versions:
 
 * Git
 * sshd
-* Haskell (GHC and Cabal)
+* Haskell (GHC, Cabal and Stack)
 * Ruby (left intentionally, to use `xcop` and `pdd` utilities)
 
-Feel free to add yours by submitting a pull request.
+This image also contains pre-downloaded ~200 most commonly used haskell
+libraries. You may find the full list [here](warmup-project/warmpup-project.cabal).
+Feel free to extend this list.
