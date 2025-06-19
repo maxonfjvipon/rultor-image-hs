@@ -29,7 +29,8 @@ executable warmup-project
       machines, algebra, arithmoi, mtl, microlens, microlens-th,
       network-simple, wai-extra, wai-logger,
       warp-tls, servant, servant-client, servant-server, servant-docs,
-      http-api-data, prettyprinter, silently, file-embed, binary-ieee754
+      http-api-data, prettyprinter, silently, file-embed, binary-ieee754,
+      xml-conduit
   default-language:   Haskell2010
 
 test-suite warmup-test
