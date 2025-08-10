@@ -56,7 +56,7 @@ RUN gem install bundler -v 2.3.26 && \
 # Cabal warm up
 COPY warmup-project /warmup-project
 WORKDIR /warmup-project
-RUN cabal update && cabal build all
+RUN cabal update && cabal build all && cabal install hlint
 
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
