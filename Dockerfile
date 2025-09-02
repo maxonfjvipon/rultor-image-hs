@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     locales \
     openssh-server \
     curl \
+    libxml2-utils \
     gnupg \
     libmagic-dev \
     && mkdir -p /var/run/sshd && chmod 0755 /var/run/sshd
