@@ -57,7 +57,10 @@ RUN gem install bundler -v 2.3.26 && \
 # Cabal warm up
 COPY warmup-project /warmup-project
 WORKDIR /warmup-project
-RUN cabal update && cabal build all && cabal install hlint
+RUN cabal update && \
+    cabal build all && \
+    cabal install hlint-3.8 --overwrite-policy=always && \
+    cabal install fourmolu-0.17.0.0 --overwrite-policy=always
 
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
