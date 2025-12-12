@@ -60,7 +60,8 @@ WORKDIR /warmup-project
 RUN cabal update && \
     cabal build all && \
     cabal install hlint-3.8 --overwrite-policy=always && \
-    cabal install fourmolu-0.17.0.0 --overwrite-policy=always
+    cabal install fourmolu-0.17.0.0 --overwrite-policy=always && \
+    cabal install hpc-codecov-0.6.3.0 --overwrite-policy=always
 
 # Add cabal bin to PATH so hlint and fourmolu can be found
 ENV PATH="${CABAL_DIR}/bin:${PATH}"
