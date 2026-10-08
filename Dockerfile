@@ -5,6 +5,15 @@ FROM haskell:9.6.7
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Debian 11 (bullseye) reached end of life and its packages are disappearing
+# from deb.debian.org, so take them from a fixed snapshot of the archive,
+# the same one the base image was built from
+ARG DEBIAN_SNAPSHOT=20260824T000000Z
+RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${DEBIAN_SNAPSHOT} bullseye main" > /etc/apt/sources.list && \
+    echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/${DEBIAN_SNAPSHOT} bullseye-security main" >> /etc/apt/sources.list && \
+    echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${DEBIAN_SNAPSHOT} bullseye-updates main" >> /etc/apt/sources.list && \
+    echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
+
 # Install system dependencies and OpenSSH
 RUN apt-get update && apt-get install -y \
     libgmp-dev \
