@@ -66,6 +66,12 @@ RUN cabal update && \
 # Add cabal bin to PATH so hlint and fourmolu can be found
 ENV PATH="${CABAL_DIR}/bin:${PATH}"
 
+# Install ruff (Python linter and formatter), a standalone binary
+ARG RUFF_VERSION=0.16.10
+RUN curl -sSfL "https://github.com/astral-sh/ruff/releases/download/${RUFF_VERSION}/ruff-$(uname -m)-unknown-linux-gnu.tar.gz" \
+    | tar -xz --no-same-owner -C /usr/local/bin --strip-components=1 && \
+    ruff --version
+
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
 
