@@ -17,6 +17,7 @@ versions:
 * sshd
 * Haskell (GHC, Cabal and Stack)
 * Ruby (left intentionally, to use `xcop` and `pdd` utilities)
+* [Ruff](https://github.com/astral-sh/ruff) (Python linter and formatter)
 
 This image also contains pre-downloaded ~200 most commonly used haskell
 libraries. You may find the full list [here](warmup-project/warmpup-project.cabal).

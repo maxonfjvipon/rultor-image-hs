@@ -5,6 +5,15 @@ FROM haskell:9.6.7
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Debian 11 (bullseye) reached end of life and its packages are disappearing
+# from deb.debian.org, so take them from a fixed snapshot of the archive,
+# the same one the base image was built from
+ARG DEBIAN_SNAPSHOT=20260824T000000Z
+RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${DEBIAN_SNAPSHOT} bullseye main" > /etc/apt/sources.list && \
+    echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/${DEBIAN_SNAPSHOT} bullseye-security main" >> /etc/apt/sources.list && \
+    echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/${DEBIAN_SNAPSHOT} bullseye-updates main" >> /etc/apt/sources.list && \
+    echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
+
 # Install system dependencies and OpenSSH
 RUN apt-get update && apt-get install -y \
     libgmp-dev \
@@ -65,6 +74,12 @@ RUN cabal update && \
 
 # Add cabal bin to PATH so hlint and fourmolu can be found
 ENV PATH="${CABAL_DIR}/bin:${PATH}"
+
+# Install ruff (Python linter and formatter), a standalone binary
+ARG RUFF_VERSION=0.16.10
+RUN curl -sSfL "https://github.com/astral-sh/ruff/releases/download/${RUFF_VERSION}/ruff-$(uname -m)-unknown-linux-gnu.tar.gz" \
+    | tar -xz --no-same-owner -C /usr/local/bin --strip-components=1 && \
+    ruff --version
 
 # Final cleanup
 RUN rm -rf /tmp/* /root/.ssh /root/.cache /root/.gnupg
